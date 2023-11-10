@@ -30,6 +30,8 @@ library(rvest)
     ##     guess_encoding
 
 ``` r
+library(ggplot2)
+
 set.seed(1)
 ```
 
@@ -208,7 +210,24 @@ file_info <- data.frame(file_name_ = file_name) |>
 
 result_df <-
   bind_cols(file_info,output)|>
-  select(-file_name_)
+  select(-file_name_)|>
+  pivot_longer(week_1:week_8,
+    names_to ="Time",
+    values_to ="Observation"
+  )|>
+  group_by(subject_id,arm)
 ```
+
+#### Plot
+
+``` r
+ ggplot(result_df, aes(x = Time, y = Observation, group=subject_id, color = subject_id)) +
+  geom_line() +
+  labs(title = "Spaghetti Plot of Observations by Subject Over Time", x = "Time", y = "Observation") +
+  theme_minimal()+
+  facet_wrap(~arm, nrow = 2)
+```
+
+![](Homework5_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ## Problem 3
