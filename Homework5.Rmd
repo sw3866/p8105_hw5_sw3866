@@ -6,7 +6,10 @@ output: github_document
 ---
 
 ```{r}
+library(tidyverse)
+library(rvest)
 
+set.seed(1)
 ```
 
 ## Problem 1
@@ -16,9 +19,33 @@ output: github_document
 ```
 
 ## Problem 2  
+#### Dataframe 
+```{r}
+list_name<-
+  as.list(
+  list.files(path = "data",full.names = TRUE)
+  )
+# Test if list_name is a list
+is.list(list_name)
+
+file_name<-list.files(path = "data",full.names = FALSE)
+```
 
 ```{r}
+output <-
+  list_name|>
+  map_dfr(read_csv,.id = NULL)
+
+file_info <- data.frame(file_name_ = file_name) |>
+  mutate(subject_id = gsub(".*_(\\d+)\\.csv", "\\1",file_name_ ),
+         arm = gsub("^(con|exp)_.*", "\\1",file_name_ ))
+
+result_df <-
+  bind_cols(file_info,output)|>
+  select(-file_name_)
 ```
+
+
 ## Problem 3  
 
 ```{r}
