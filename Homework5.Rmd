@@ -58,9 +58,8 @@ result_df <-
   theme_minimal()+
   facet_wrap(~arm, nrow = 2)
 ```
-
-```{r}
-```
+  
+There was a slight fluctuation in the observed values for each subject of the control group from week one to week eight. However, for the experimental group, the observed values basically went up from week one to week eight in general. In sum, the differences between control and experimental groups increased as the time goes by. 
 
 ## Problem 3  
 

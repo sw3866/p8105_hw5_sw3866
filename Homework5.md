@@ -230,4 +230,10 @@ result_df <-
 
 ![](Homework5_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
+There was a slight fluctuation in the observed values for each subject
+of the control group from week one to week eight. However, for the
+experimental group, the observed values basically went up from week one
+to week eight in general. In sum, the differences between control and
+experimental groups increased as the time goes by.
+
 ## Problem 3
