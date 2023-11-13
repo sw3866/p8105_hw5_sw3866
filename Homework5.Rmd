@@ -9,6 +9,7 @@ output: github_document
 library(tidyverse)
 library(rvest)
 library(ggplot2)
+library(broom)
 
 set.seed(1)
 ```
@@ -62,7 +63,72 @@ result_df <-
 There was a slight fluctuation in the observed values for each subject of the control group from week one to week eight. However, for the experimental group, the observed values basically went up from week one to week eight in general. In sum, the differences between control and experimental groups increased as the time goes by. 
 
 ## Problem 3  
+```{r}
+# Function to simulate data from a normal distribution, conduct t-test, and obtain p-value
+simulate_t_test <- function(n, mu, sigma, alpha) {
+  sim_data <- rnorm(n, mean = mu, sd = sigma)
+  t_test_result <- t.test(sim_data, mu = 0)
+  tidy(t_test_result)|>
+    select(estimate, p.value)
+}
+
+# Perform the simulation using map
+
+result <- map_dfr(1:5000, ~ simulate_t_test(30, 0, 5, 0.05))
+
+# Calculate power: Proportion of p-values less than alpha
+power <- mean(result$p.value < 0.005)
+
+power
+
+# Set parameters
+mu_v<-1:6
+# Repeat
+results <- map_dfr(mu_v, function(mu) {
+  tibble(
+    mu = rep(mu, 5000),
+    results = map(1:5000, ~ simulate_t_test(30, mu, 5, 0.05))
+  )
+}) |>
+unnest(results)
+
+power_by_mu <- 
+  results |>
+  group_by(mu) |>
+  summarize(power = mean(p.value < 0.05))
+```
+#Plot
+```{r}
+ggplot(power_by_mu, aes(x = mu, y = power)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "True μ value", y = "Power (Proportion of rejected null hypotheses)") +
+  ggtitle("Power of One-Sample t-Test for Different True μ Values")
+```
 
 ```{r}
+avg_estimate_all <- 
+  results |>
+  group_by(mu) |>
+  summarize(avg_estimate = mean(estimate))
 
+avg_estimate_rejected <- 
+  results |>
+  filter(p.value < 0.05) |>
+  group_by(mu) |>
+  summarize(avg_estimate_rejected = mean(estimate))
+
+# Merge the two datasets for plotting
+combined_data <- merge(avg_estimate_all, avg_estimate_rejected, by = "mu", all = TRUE)
+
+# Plotting the average estimate of μ̂ against true μ values
+ggplot(combined_data, aes(x = mu)) +
+  geom_line(aes(y = avg_estimate, color = "All Samples")) +
+  geom_point(aes(y = avg_estimate, color = "All Samples")) +
+  geom_line(aes(y = avg_estimate_rejected, color = "Rejected Null")) +
+  geom_point(aes(y = avg_estimate_rejected, color = "Rejected Null")) +
+  labs(x = "True μ value", y = "Average Estimate of μ̂") +
+  scale_color_manual(values = c("All Samples" = "blue", "Rejected Null" = "red")) +
+  ggtitle("Average Estimate of μ̂ for Different True μ Values")
 ```
+
