@@ -239,6 +239,8 @@ experimental groups increased as the time goes by.
 
 ## Problem 3
 
+#### Simulation
+
 ``` r
 # Function to simulate data from a normal distribution, conduct t-test, and obtain p-value
 simulate_t_test <- function(n, mu, sigma, alpha) {
@@ -278,17 +280,20 @@ power_by_mu <-
   summarize(power = mean(p.value < 0.05))
 ```
 
-\#Plot
+#### Plot
 
 ``` r
 ggplot(power_by_mu, aes(x = mu, y = power)) +
   geom_line() +
   geom_point() +
-  labs(x = "True μ value", y = "Power (Proportion of rejected null hypotheses)") +
-  ggtitle("Power of One-Sample t-Test for Different True μ Values")
+  labs(x = "True mu value", y = "Power (Proportion of rejected null hypotheses)") +
+  ggtitle("Power of One-Sample t-Test for Different True mu Values")
 ```
 
 ![](Homework5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+With the true $\mu$ value getting higher, the power of test is getting
+closer and closer to 1.
 
 ``` r
 avg_estimate_all <- 
@@ -311,9 +316,14 @@ ggplot(combined_data, aes(x = mu)) +
   geom_point(aes(y = avg_estimate, color = "All Samples")) +
   geom_line(aes(y = avg_estimate_rejected, color = "Rejected Null")) +
   geom_point(aes(y = avg_estimate_rejected, color = "Rejected Null")) +
-  labs(x = "True μ value", y = "Average Estimate of μ̂") +
+  labs(x = "True mu value", y = "Average Estimate of mu_hat") +
   scale_color_manual(values = c("All Samples" = "blue", "Rejected Null" = "red")) +
-  ggtitle("Average Estimate of μ̂ for Different True μ Values")
+  ggtitle("Average Estimate of *mu for Different True mu Values")
 ```
 
 ![](Homework5_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+The sample average of $\mu$ across tests for which the null is rejected
+is **not** approximately equal to the true value of $\mu$ due to the
+inherent randomness and variability present in sampling and statistical
+inference.
