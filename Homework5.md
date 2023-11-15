@@ -264,7 +264,7 @@ power
 
 ``` r
 # Set parameters
-mu_v<-1:6
+mu_v<-0:6
 # Repeat
 results <- map_dfr(mu_v, function(mu) {
   tibble(
@@ -286,8 +286,8 @@ power_by_mu <-
 ggplot(power_by_mu, aes(x = mu, y = power)) +
   geom_line() +
   geom_point() +
-  labs(x = "True mu value", y = "Power (Proportion of rejected null hypotheses)") +
-  ggtitle("Power of One-Sample t-Test for Different True mu Values")
+  labs(x = "True μ value", y = "Power (Proportion of rejected null hypotheses)") +
+  ggtitle("Power of One-Sample t-Test for Different True μ Values")
 ```
 
 ![](Homework5_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
@@ -316,14 +316,20 @@ ggplot(combined_data, aes(x = mu)) +
   geom_point(aes(y = avg_estimate, color = "All Samples")) +
   geom_line(aes(y = avg_estimate_rejected, color = "Rejected Null")) +
   geom_point(aes(y = avg_estimate_rejected, color = "Rejected Null")) +
-  labs(x = "True mu value", y = "Average Estimate of mu_hat") +
+  labs(x = "True μ value", y = "Average Estimate of μ̂") +
   scale_color_manual(values = c("All Samples" = "blue", "Rejected Null" = "red")) +
-  ggtitle("Average Estimate of *mu for Different True mu Values")
+  ggtitle("Average Estimate of for μ̂ Different True μ Values")
 ```
 
 ![](Homework5_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 The sample average of $\mu$ across tests for which the null is rejected
-is **not** approximately equal to the true value of $\mu$ due to the
-inherent randomness and variability present in sampling and statistical
-inference.
+is approximately equal to the true value of $\mu$ when $\mu$
+increases.The reason why this is the case is the following: When true
+population mean ($\mu=0$),both the overall average estimate $hat{\mu}$
+and the rejected group’s are expected to center around zero. when true
+population mean ($\mu$) increases, the actual mean of the population is
+farther away from the null hypothesis value,so the likelihood of
+rejecting the null hypothesis will increases. That means the average
+estimate of μ̂ only in samples for which the null was rejected will move
+closer to the true population mean.
