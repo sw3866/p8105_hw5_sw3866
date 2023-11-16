@@ -209,6 +209,7 @@ file_info <- data.frame(file_name_ = file_name) |>
   mutate(subject_id = gsub(".*_(\\d+)\\.csv", "\\1",file_name_ ),
          arm = gsub("^(con|exp)_.*", "\\1",file_name_ ))
 
+
 result_df <-
   bind_cols(file_info,output)|>
   select(-file_name_)|>
@@ -325,11 +326,20 @@ ggplot(combined_data, aes(x = mu)) +
 
 The sample average of $\mu$ across tests for which the null is rejected
 is approximately equal to the true value of $\mu$ when $\mu$
-increases.The reason why this is the case is the following: When true
-population mean ($\mu=0$),both the overall average estimate $hat{\mu}$
-and the rejected group’s are expected to center around zero. when true
-population mean ($\mu$) increases, the actual mean of the population is
-farther away from the null hypothesis value,so the likelihood of
-rejecting the null hypothesis will increases. That means the average
-estimate of μ̂ only in samples for which the null was rejected will move
-closer to the true population mean.
+increases.The reason why this is the case is the following:
+
+When true population mean ($\mu=0$),the overall average estimate μ̂ and
+the rejected group average μ̂ estimate are expected to be zero.
+
+When true population mean ($\mu$) started to increase from 0, the group
+that fails to reject the null hypothesis tends to have a estimate μ̂
+closer to zero. Since the true population mean is higher than zero, the
+estimation μ̂ is a little bit higher than the true population mean as
+well.
+
+When true population mean ($\mu$) continues increases and get closer to
+6, the actual mean of the population is farther away from the null
+hypothesis value, so the likelihood of rejecting the null hypothesis
+will increases. That means the average estimate of only in samples for
+which the null was rejected will move closer to the true population
+mean.

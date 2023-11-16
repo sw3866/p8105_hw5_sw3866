@@ -143,5 +143,3 @@ When true population mean ($\mu$) started to increase from 0, the group that fai
 
 When true population mean ($\mu$) continues increases and get closer to 6, the actual mean of the population is farther away from the null hypothesis value, so the likelihood of rejecting the null hypothesis will increases. That means the average estimate of only in samples for which the null was rejected  will move closer to the true population mean.  
  
-
-
